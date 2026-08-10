@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+# !/beegfs/documentation/programs/vudo/00_programs/72_CompositeWorkflows/00_for_beck/hermes/hermes_core/.venv/bin/python3
 
 import numpy as np
 from hermes_core import Workspace
