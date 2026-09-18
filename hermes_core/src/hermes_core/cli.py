@@ -155,14 +155,17 @@ def read_input():
         data_type = config["data"]["file type"]
         voxel = config["data"]["voxel size"]
         scalar = config["data"]["scalar"]
-        segmentation = config["analysis"]["segmentation method"]
+        sampling = config["analysis"]["sampling method"]
+        segmentation = config["analysis"]["segmentation"]
+        segment_method = config["analysis"]["segmentation method"]
         geo_props = config["analysis"]["compute geometric properties"]
         out_path = config["export"]["path"]
         output_type= config["export"]["file type"]
         visual = config["analysis"]["visualization"]
+        visual = config["analysis"]["visualization"]
 
 
-    return data_path, data_type, out_path, output_type, segmentation, geo_props, voxel, scalar, visual
+    return data_path, data_type, out_path, output_type, sampling, segmentation, segment_method, geo_props, voxel, scalar, visual
 
 
 # Main entrance to HERMES code 
@@ -173,8 +176,8 @@ def main():
     # ==========================================================
     
     #  Load data
-    data_path, data_type, out_path, output_type, segmentation, geo_props, voxel, scalar, visual = read_input()
-    print(data_path, data_type, out_path, output_type, segmentation, geo_props, voxel, scalar, visual)
+    data_path, data_type, out_path, output_type, sampling, segmentation, segment_method, geo_props, voxel, scalar, visual = read_input()
+    # print(data_path, data_type, out_path, output_type, segmentation, segment_method, geo_props, voxel, scalar, visual)
 
     # Initialize workspace with the data
     if data_type == ".vtu":
@@ -186,16 +189,23 @@ def main():
     # 2. SAMPLING MODULE
     # ==========================================================
     print("\n--- Sampling ---")
-    # Extract a specific subvolume (e.g., zooming in on the sphere)
-    sub_ws = ws.extract_subvolume(corner=(10, 10, 10), dimensions=(40, 40, 40))
-    print(f"Extracted Subvolume: {sub_ws.name} | Shape: {sub_ws.matrix.shape}")
+    if sampling == "random":
+        # extract_subvolume should be called
+        pass
+    elif sampling == "specific":
+        # Extract a specific subvolume (e.g., zooming in on the sphere)
+        sub_ws = ws.extract_subvolume(corner=(10, 10, 10), dimensions=(40, 40, 40))
+        print(f"Extracted Subvolume: {sub_ws.name} | Shape: {sub_ws.matrix.shape}")
+    else:
+        raise ValueError("The sampling method must be either 'specific' or 'random'.")
 
     # # ==========================================================
     # # 3. SEGMENTATION
     # # ==========================================================
-    print("\n--- Running Segmentation ---")
-    ws.segment(method=segmentation, invert=False) # a variable for block size will need to be added later (for adaptive thresholding)
-    print(f"Segmentation complete. Unique values in matrix: {np.unique(ws.matrix)}")
+    if segmentation:
+        print("\n--- Running Segmentation ---")
+        ws.segment(method=segment_method, invert=False) # a variable for block size will need to be added later (for adaptive thresholding)
+        print(f"Segmentation complete. Unique values in matrix: {np.unique(ws.matrix)}")
 
     # # ==========================================================
     # # 4. MESHING & SMOOTHING

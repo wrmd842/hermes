@@ -6,15 +6,25 @@ data:
     - ".tif"
   voxel size: 1
   scalar: "YarnIndex"
+
+
 analysis:
+  sampling method: random
+  supported methods:
+    - "random"
+    - "specific"
+    
+  segmentation: true
   segmentation method: Otsu
   supported methods: 
     - "Otsu"
     - "Li"
     - "Yen"
     - "Adaptive Thresholding"
+  
   compute geometric properties: true
   visualization: true
+  
 
 export:
   path: "/beegfs/users/abeck/Hypersonics/VAPOR/TestOutput"
