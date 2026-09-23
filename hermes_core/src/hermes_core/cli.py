@@ -4,6 +4,7 @@ import numpy as np
 from hermes_core import Workspace
 import os
 import yaml
+import tomllib
 from pathlib import Path
 
 def create_synthetic_sphere(size=50):
@@ -136,39 +137,78 @@ def create_synthetic_bending_fibers(size=60, num_fibers=10, fiber_radius=5):
 
 def read_input():
     cwd = os.getcwd()
-    input_file = cwd + "/" + "hermes.yaml"
+    print("hit")
+    try: 
+        print("hit_yaml")
 
-    # set default values:
-    data_path = ""
-    out_path = ""
-    data_type = ""
-    voxel = 0
-    output_type = ""
-    segmentation = "Otsu"
-    geo_props = False
-    visual = False
+        input_file = cwd + "/" + "hermes.yaml"
 
-    # Read the input file
-    with open(input_file,"r") as file:
-        config = yaml.safe_load(file)
-        data_path = config["data"]["path"]
-        data_type = config["data"]["file type"]
-        voxel = config["data"]["voxel size"]
-        scalar = config["data"]["scalar"]
-        sampling = config["analysis"]["sampling type"]
-        sampling_method = config["analysis"]["sampling method"]
-        segmentation = config["analysis"]["segmentation"]
-        segment_method = config["analysis"]["segmentation method"]
-        geo_props = config["analysis"]["compute geometric properties"]
-        out_path = config["export"]["path"]
-        output_type= config["export"]["file type"]
-        visual = config["analysis"]["visualization"]
-        visual = config["analysis"]["visualization"]
+        # set default values:
+        data_path = ""
+        out_path = ""
+        data_type = ""
+        voxel = 0
+        output_type = ""
+        segmentation = "Otsu"
+        geo_props = False
+        visual = False
 
-
-    return data_path, data_type, out_path, output_type, sampling, sampling_method, segmentation, segment_method, geo_props, voxel, scalar, visual
+        # Read the input file
+        with open(input_file,"r") as file:
+            config = yaml.safe_load(file)
+            data_path = config["data"]["path"]
+            data_type = config["data"]["file type"]
+            voxel = config["data"]["voxel size"]
+            scalar = config["data"]["scalar"]
+            sampling = config["analysis"]["sampling type"]
+            sampling_method = config["analysis"]["sampling method"]
+            segmentation = config["analysis"]["segmentation"]
+            segment_method = config["analysis"]["segmentation method"]
+            geo_props = config["analysis"]["compute geometric properties"]
+            out_path = config["export"]["path"]
+            output_type= config["export"]["file type"]
+            visual = config["analysis"]["visualization"]
 
 
+        return data_path, data_type, out_path, output_type, sampling, sampling_method, segmentation, segment_method, geo_props, voxel, scalar, visual
+    except:
+        try: 
+            print("hit_toml")
+
+            input_file = cwd + "/" + "hermes.toml"
+        
+            # set default values:
+            data_path = ""
+            out_path = ""
+            data_type = ""
+            voxel = 0
+            output_type = ""
+            segmentation = "Otsu"
+            geo_props = False
+            visual = False
+    
+            # Read the input file
+            with open(input_file,"r") as file:
+                config = tomllib.load(file)
+                data_path = config["data"]["input_path"]
+                data_type = config["data"]["file_type"]
+                voxel = config["data"]["voxel_size"]
+                scalar = config["data"]["scalar"]
+                sampling = config["sampling"]["sampling_type"]
+                sampling_method = config["sampling"]["sampling_method"]
+                segmentation = config["segmentation"]["segmentation"]
+                segment_method = config["segmentation"]["segmentation_method"]
+                geo_props = config["analysis"]["compute_geometric_props"]
+                out_path = config["export"]["output_path"]
+                output_type= config["export"]["file_type"]
+                visual = config["analysis"]["visualization"]
+    
+    
+            return data_path, data_type, out_path, output_type, sampling, sampling_method, segmentation, segment_method, geo_props, voxel, scalar, visual
+
+        except:
+            print("No input file found!! Please provide a yaml or toml file!")
+            
 # Main entrance to HERMES code 
 def main():
     print("\n--- Running HERMES ---")

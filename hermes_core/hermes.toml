@@ -19,7 +19,7 @@ Analysis Settings
   segmentation = true               # Binarizes the internal greyscale matrix (used for greyscale images)
   segmentation_method = Otsu        # Options: "Otsu", "Li", "Yen", "Adaptive Thresholding". To learn more about these methods type help
   
-[geometricprops]
+[analysis]
   compute_geometric_props = true    # Computes information such as closed volume, 
   visualization = true  
 
