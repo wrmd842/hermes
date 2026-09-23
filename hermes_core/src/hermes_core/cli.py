@@ -155,7 +155,8 @@ def read_input():
         data_type = config["data"]["file type"]
         voxel = config["data"]["voxel size"]
         scalar = config["data"]["scalar"]
-        sampling = config["analysis"]["sampling method"]
+        sampling = config["analysis"]["sampling type"]
+        sampling_method = config["analysis"]["sampling method"]
         segmentation = config["analysis"]["segmentation"]
         segment_method = config["analysis"]["segmentation method"]
         geo_props = config["analysis"]["compute geometric properties"]
@@ -165,7 +166,7 @@ def read_input():
         visual = config["analysis"]["visualization"]
 
 
-    return data_path, data_type, out_path, output_type, sampling, segmentation, segment_method, geo_props, voxel, scalar, visual
+    return data_path, data_type, out_path, output_type, sampling, sampling_method, segmentation, segment_method, geo_props, voxel, scalar, visual
 
 
 # Main entrance to HERMES code 
@@ -176,7 +177,7 @@ def main():
     # ==========================================================
     
     #  Load data
-    data_path, data_type, out_path, output_type, sampling, segmentation, segment_method, geo_props, voxel, scalar, visual = read_input()
+    data_path, data_type, out_path, output_type, sampling, sampling_method, segmentation, segment_method, geo_props, voxel, scalar, visual = read_input()
     # print(data_path, data_type, out_path, output_type, segmentation, segment_method, geo_props, voxel, scalar, visual)
 
     # Initialize workspace with the data
@@ -190,8 +191,9 @@ def main():
     # ==========================================================
     print("\n--- Sampling ---")
     if sampling == "random":
-        # extract_subvolume should be called
-        pass
+        # grid - deterministic, random - stochastic
+        sub_ws = ws.extract_subvolume( mode=sampling_method, num_samples=10, sub_dims=(50, 50, 50))
+        # sample_subvolume should be called
     elif sampling == "specific":
         # Extract a specific subvolume (e.g., zooming in on the sphere)
         sub_ws = ws.extract_subvolume(corner=(10, 10, 10), dimensions=(40, 40, 40))

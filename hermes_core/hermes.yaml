@@ -9,10 +9,15 @@ data:
 
 
 analysis:
-  sampling method: random
-  supported methods:
+  sampling type: random
+  supported types:
     - "random"
     - "specific"
+  sampling method: 'deterministic'
+  supported methods:
+    - "deterministic"
+    - "stochastic"
+
     
   segmentation: true
   segmentation method: Otsu

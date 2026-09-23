@@ -1,0 +1,33 @@
+===========================
+     HERMES Input File
+===========================
+Import Settings
+[data]
+  input_path = "/beegfs/users/abeck/Hypersonics/VAPOR/mesh_for_ryan.vtu"
+  file_type = ".vtu"                # supported formats: ".vtu", ".tif"
+  voxel_size = 1                    # Optional, if no size is given, the first cell's bounds are auto-detected
+  scalar = "YarnIndex"              # The name of the cell data array to load as matrix values
+
+
+Analysis Settings
+[sampling]
+  sampling_type = random            # supported types: random or specific
+  # if the selected sampling type was random:
+  sampling method = 'deterministic' # Options: "deterministic" (creates a Cartesian grid) or "stochastic" (random)
+  
+[segmentation]
+  segmentation = true               # Binarizes the internal greyscale matrix (used for greyscale images)
+  segmentation_method = Otsu        # Options: "Otsu", "Li", "Yen", "Adaptive Thresholding". To learn more about these methods type help
+  
+[geometricprops]
+  compute_geometric_props = true    # Computes information such as closed volume, 
+  visualization = true  
+
+
+Export Settings
+[export]
+  output_path = "/beegfs/users/abeck/Hypersonics/VAPOR/TestOutput"
+  file_type = ".vtu"                # supported formats: ".vtu", ".stl"
+
+
+
